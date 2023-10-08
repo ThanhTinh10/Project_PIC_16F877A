@@ -1,0 +1,21 @@
+#include "C:\Users\Administrator\Documents\project_pic\interrupt\main.h"
+
+//#byte PORTD=0x08
+#include <pic.h>
+#include <xc.h>
+void main()
+{
+  TRISD = 0; // Ð?t thanh ghi TRISD là output
+   
+  while(1)
+  {
+    PORTD = 0x01; // Ghi giá tr? 0b00000001 vào thanh ghi PORTD
+    
+    delay_ms(1000);
+    
+    PORTD = 0x02; // Ghi giá tr? 0b00000010 vào thanh ghi PORTD
+    
+    delay_ms(1000);
+  }
+}
+

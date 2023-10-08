@@ -1,0 +1,252 @@
+CCS PCM C Compiler, Version 5.015, 5967               03-Thg6-23 09:51
+
+               Filename:   C:\Users\Administrator\Documents\project_pic\SPI PROTOCOL_1 master controls LEDs through 2 slaves\MASSTER\main.lst
+
+               ROM used:   158 words (2%)
+                           Largest free fragment is 2048
+               RAM used:   6 (2%) at main() level
+                           10 (3%) worst case
+               Stack used: 2 locations
+               Stack size: 8
+
+*
+0000:  MOVLW  00
+0001:  MOVWF  0A
+0002:  GOTO   050
+0003:  NOP
+.................... #include <16F877A.h> 
+.................... //////////// Standard Header file for the PIC16F877A device //////////////// 
+.................... /////////////////////////////////////////////////////////////////////////// 
+.................... ////        (C) Copyright 1996, 2013 Custom Computer Services          //// 
+.................... //// This source code may only be used by licensed users of the CCS C  //// 
+.................... //// compiler.  This source code may only be distributed to other      //// 
+.................... //// licensed users of the CCS C compiler.  No other use, reproduction //// 
+.................... //// or distribution is permitted without written permission.          //// 
+.................... //// Derivative programs created using this software in object code    //// 
+.................... //// form are not restricted in any way.                               //// 
+.................... /////////////////////////////////////////////////////////////////////////// 
+.................... #device PIC16F877A 
+....................  
+.................... #list 
+....................  
+.................... #device adc=8 
+....................  
+.................... #FUSES NOWDT                    //No Watch Dog Timer 
+.................... #FUSES HS                       //High speed Osc (> 4mhz for PCM/PCH) (>10mhz for PCD) 
+.................... #FUSES NOPUT                    //No Power Up Timer 
+.................... #FUSES NOPROTECT                //Code not protected from reading 
+.................... #FUSES NODEBUG                  //No Debug mode for ICD 
+.................... #FUSES NOBROWNOUT               //No brownout reset 
+.................... #FUSES NOLVP                    //No low voltage prgming, B3(PIC16) or B5(PIC18) used for I/O 
+.................... #FUSES NOCPD                    //No EE protection 
+.................... #FUSES NOWRT                    //Program memory not write protected 
+.................... #FUSES RESERVED                 //Used to set the reserved FUSE bits 
+.................... #use delay(clock=20000000) 
+0004:  MOVLW  24
+0005:  MOVWF  04
+0006:  BCF    03.7
+0007:  MOVF   00,W
+0008:  BTFSC  03.2
+0009:  GOTO   017
+000A:  MOVLW  06
+000B:  MOVWF  78
+000C:  CLRF   77
+000D:  DECFSZ 77,F
+000E:  GOTO   00D
+000F:  DECFSZ 78,F
+0010:  GOTO   00C
+0011:  MOVLW  7B
+0012:  MOVWF  77
+0013:  DECFSZ 77,F
+0014:  GOTO   013
+0015:  DECFSZ 00,F
+0016:  GOTO   00A
+0017:  RETURN
+....................  
+.................... #byte TRISC = 0x87 
+.................... #byte PORTC = 0x07 
+....................  
+.................... void spi_write_slave1(int8 data) 
+.................... {     
+....................    output_low(PIN_C1); 
+0018:  BCF    20.1
+0019:  MOVF   20,W
+001A:  BSF    03.5
+001B:  MOVWF  07
+001C:  BCF    03.5
+001D:  BCF    07.1
+....................    spi_write(data); 
+001E:  MOVF   23,W
+001F:  MOVWF  13
+0020:  BSF    03.5
+0021:  RRF    14,W
+0022:  BTFSS  03.0
+0023:  GOTO   021
+....................    delay_ms(100); 
+0024:  MOVLW  64
+0025:  BCF    03.5
+0026:  MOVWF  24
+0027:  CALL   004
+....................    output_high(PIN_C1); 
+0028:  BCF    20.1
+0029:  MOVF   20,W
+002A:  BSF    03.5
+002B:  MOVWF  07
+002C:  BCF    03.5
+002D:  BSF    07.1
+....................    delay_ms(100); 
+002E:  MOVLW  64
+002F:  MOVWF  24
+0030:  CALL   004
+0031:  BCF    0A.3
+0032:  BCF    0A.4
+0033:  GOTO   08B (RETURN)
+.................... } 
+....................  
+....................  
+.................... void spi_write_slave2(int8 data) 
+.................... { 
+....................    output_low(PIN_C2); 
+0034:  BCF    20.2
+0035:  MOVF   20,W
+0036:  BSF    03.5
+0037:  MOVWF  07
+0038:  BCF    03.5
+0039:  BCF    07.2
+....................    spi_write(data); 
+003A:  MOVF   23,W
+003B:  MOVWF  13
+003C:  BSF    03.5
+003D:  RRF    14,W
+003E:  BTFSS  03.0
+003F:  GOTO   03D
+....................    delay_ms(100); 
+0040:  MOVLW  64
+0041:  BCF    03.5
+0042:  MOVWF  24
+0043:  CALL   004
+....................    output_high(PIN_C2); 
+0044:  BCF    20.2
+0045:  MOVF   20,W
+0046:  BSF    03.5
+0047:  MOVWF  07
+0048:  BCF    03.5
+0049:  BSF    07.2
+....................    delay_ms(100); 
+004A:  MOVLW  64
+004B:  MOVWF  24
+004C:  CALL   004
+004D:  BCF    0A.3
+004E:  BCF    0A.4
+004F:  GOTO   090 (RETURN)
+.................... } 
+....................  
+....................  
+.................... void main() 
+0050:  MOVF   03,W
+0051:  ANDLW  1F
+0052:  MOVWF  03
+0053:  MOVLW  FF
+0054:  MOVWF  20
+0055:  BSF    03.5
+0056:  BSF    1F.0
+0057:  BSF    1F.1
+0058:  BSF    1F.2
+0059:  BCF    1F.3
+005A:  MOVLW  07
+005B:  MOVWF  1C
+005C:  BCF    03.7
+.................... { 
+....................      TRISC=0; 
+005D:  CLRF   07
+....................      setup_spi(SPI_MASTER |SPI_L_TO_H | SPI_CLK_DIV_16  ); 
+005E:  BCF    03.5
+005F:  BCF    14.5
+0060:  BCF    20.5
+0061:  MOVF   20,W
+0062:  BSF    03.5
+0063:  MOVWF  07
+0064:  BCF    03.5
+0065:  BSF    20.4
+0066:  MOVF   20,W
+0067:  BSF    03.5
+0068:  MOVWF  07
+0069:  BCF    03.5
+006A:  BCF    20.3
+006B:  MOVF   20,W
+006C:  BSF    03.5
+006D:  MOVWF  07
+006E:  MOVLW  21
+006F:  BCF    03.5
+0070:  MOVWF  14
+0071:  MOVLW  00
+0072:  BSF    03.5
+0073:  MOVWF  14
+....................      delay_ms(100); 
+0074:  MOVLW  64
+0075:  BCF    03.5
+0076:  MOVWF  24
+0077:  CALL   004
+....................      output_high(PIN_C1); 
+0078:  BCF    20.1
+0079:  MOVF   20,W
+007A:  BSF    03.5
+007B:  MOVWF  07
+007C:  BCF    03.5
+007D:  BSF    07.1
+....................      output_high(PIN_C2); 
+007E:  BCF    20.2
+007F:  MOVF   20,W
+0080:  BSF    03.5
+0081:  MOVWF  07
+0082:  BCF    03.5
+0083:  BSF    07.2
+....................      int8 data1 = 0b01111111; 
+....................      int8 data2 = 0b00000011; 
+0084:  MOVLW  7F
+0085:  MOVWF  21
+0086:  MOVLW  03
+0087:  MOVWF  22
+....................       
+....................      
+....................    while(TRUE) 
+....................    { 
+....................      
+....................      spi_write_slave1(data1);   
+0088:  MOVF   21,W
+0089:  MOVWF  23
+008A:  GOTO   018
+....................      data1 = data1 +1 ; 
+008B:  MOVLW  01
+008C:  ADDWF  21,F
+....................     
+....................      spi_write_slave2(data2); 
+008D:  MOVF   22,W
+008E:  MOVWF  23
+008F:  GOTO   034
+....................      data2 = data2 + 1; 
+0090:  MOVLW  01
+0091:  ADDWF  22,F
+....................       
+....................      if (data1==255) data1=0; 
+0092:  INCFSZ 21,W
+0093:  GOTO   096
+0094:  CLRF   21
+0095:  GOTO   099
+....................      else if (data2==255) data2=0; 
+0096:  INCFSZ 22,W
+0097:  GOTO   099
+0098:  CLRF   22
+....................      delay_ms(100); 
+0099:  MOVLW  64
+009A:  MOVWF  24
+009B:  CALL   004
+009C:  GOTO   088
+....................       
+....................    } 
+....................  
+.................... } 
+009D:  SLEEP
+
+Configuration Fuses:
+   Word  1: 3F3A   HS NOWDT NOPUT NOBROWNOUT NOLVP NOCPD NOWRT NODEBUG NOPROTECT

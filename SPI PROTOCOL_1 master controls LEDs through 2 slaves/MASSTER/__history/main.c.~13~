@@ -1,0 +1,51 @@
+#include <16F877A.h>
+#device adc=8
+
+#FUSES NOWDT                    //No Watch Dog Timer
+#FUSES HS                       //High speed Osc (> 4mhz for PCM/PCH) (>10mhz for PCD)
+#FUSES NOPUT                    //No Power Up Timer
+#FUSES NOPROTECT                //Code not protected from reading
+#FUSES NODEBUG                  //No Debug mode for ICD
+#FUSES NOBROWNOUT               //No brownout reset
+#FUSES NOLVP                    //No low voltage prgming, B3(PIC16) or B5(PIC18) used for I/O
+#FUSES NOCPD                    //No EE protection
+#FUSES NOWRT                    //Program memory not write protected
+#FUSES RESERVED                 //Used to set the reserved FUSE bits
+#use delay(clock=20000000)
+
+#byte TRISC = 0x87
+#byte PORTC = 0x07
+
+
+
+
+void main()
+{
+     TRISC=0;
+     setup_spi(SPI_MASTER | SPI_L_TO_H  | SPI_CLK_DIV_16  );
+     delay_ms(1000);
+     output_high(PIN_C6);
+     output_high(PIN_C7)
+     int8 data = 0b01111111;
+    
+   while(TRUE)
+   {
+      output_low(PIN_C6);
+      delay_ms(1000);
+      spi_write(data);
+      output_high(PIN_C6);
+      delay_ms(1000);
+       output_low(PIN_C7);
+      delay_ms(1000);
+      spi_write(data);
+      output_high(PIN_C7);
+      delay_ms(1000);
+      data = data+1;
+     if (data==255)
+       {
+        data = 0;
+       }
+      //TODO: User Code
+   }
+
+}

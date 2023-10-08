@@ -1,0 +1,13 @@
+#include <16F877A.h>
+#include <LCD.c>
+#device adc=8
+
+void main()
+{
+
+   while(TRUE)
+   {
+      //TODO: User Code
+   }
+
+}

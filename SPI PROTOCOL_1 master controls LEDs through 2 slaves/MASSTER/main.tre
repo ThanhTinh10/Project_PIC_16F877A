@@ -1,0 +1,11 @@
+ÀÄmain
+   ÀÄMAIN  0/78  Ram=0
+      ÃÄ@cinit1  (Inline)  Ram=0
+      ÃÄ@delay_ms1  0/20  Ram=1
+      ÃÄspi_write_slave1  0/28  Ram=1
+      ³  ÃÄ@delay_ms1  0/20  Ram=1
+      ³  ÀÄ@delay_ms1  0/20  Ram=1
+      ÃÄspi_write_slave2  0/28  Ram=1
+      ³  ÃÄ@delay_ms1  0/20  Ram=1
+      ³  ÀÄ@delay_ms1  0/20  Ram=1
+      ÀÄ@delay_ms1  0/20  Ram=1

@@ -1,0 +1,3 @@
+*** Error 112 "C:\Program Files (x86)\PICC\Drivers\lcd.c" Line 327(1,1): Function used but not defined:  ... delay_ms 377  SCR=1001
+      1 Errors,  0 Warnings.
+Build Failed.

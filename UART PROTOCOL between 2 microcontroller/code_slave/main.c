@@ -1,0 +1,67 @@
+#include <16F877A.h>
+#include <lcd.c>
+#include <stdlib.h>
+
+#fuses NOWDT                    // No Watch Dog Timer
+#fuses HS                       // High-speed Oscillator (> 4MHz for PCM/PCH) (>10MHz for PCD)
+#fuses NOPUT                    // No Power Up Timer
+#fuses NOPROTECT                // Code not protected from reading
+#fuses NODEBUG                  // No Debug mode for ICD
+#fuses NOBROWNOUT               // No brownout reset
+#fuses NOLVP                    // No low voltage programming, B3(PIC16) or B5(PIC18) used for I/O
+#fuses NOCPD                    // No EE protection
+#fuses NOWRT                    // Program memory not write protected
+#fuses RESERVED                 // Used to set the reserved FUSE bits
+
+#use delay(clock=20000000)
+#use rs232(baud=9600, xmit=PIN_C6, rcv=PIN_C7, UART1)
+
+#define LCD_ENABLE_PIN  PIN_E0                                   
+#define LCD_RS_PIN      PIN_E1                                 
+#define LCD_RW_PIN      PIN_E2                                  
+#define LCD_DATA4       PIN_D4                                  
+#define LCD_DATA5       PIN_D5                                    
+#define LCD_DATA6       PIN_D6                                   
+#define LCD_DATA7       PIN_D7    
+#define LED   PIN_B1
+
+#byte TRISB = 0x86
+#byte PORTB = 0x06
+#byte TRISD = 0x88
+#byte PORTD = 0x08
+
+unsigned int8 DL;
+
+#INT_RDA
+void serial_isr()
+{
+    DL = getc();
+    if (DL == 'L')
+        output_toggle(LED);
+}
+
+void main()
+{
+    TRISB = 0;
+    TRISD = 0;
+    output_low(LED);
+    lcd_init();
+    
+    enable_interrupts(GLOBAL);
+    enable_interrupts(INT_RDA);
+   
+    while (TRUE)
+    {
+        lcd_gotoxy(1, 1);
+        if (input_state(LED))
+            printf(lcd_putc, "LED IS WORKING  ");
+        else
+            printf(lcd_putc, "LED IS NOT WORKING");
+        if(DL != 'L'){
+        lcd_gotoxy(1, 2);
+        printf(lcd_putc, "TEMPER=%u", DL);
+        delay_ms(500);
+        }
+    }
+}
+

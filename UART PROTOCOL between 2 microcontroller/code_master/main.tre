@@ -1,0 +1,6 @@
+ÀÄmain
+   ÀÄmain  0/126  Ram=1
+      ÃÄ@cinit1  (Inline)  Ram=0
+      ÃÄ@ITOF  0/31  Ram=2
+      ÃÄ@DIVFF  0/204  Ram=14
+      ÀÄ@SFTOI  0/33  Ram=4
